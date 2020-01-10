@@ -1,0 +1,75 @@
+CREATE DATABASE hw7db;
+
+CREATE TABLE `books` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_name` varchar(40) DEFAULT NULL,
+  `cost` int(11) DEFAULT NULL,
+  `warehouse` varchar(40) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `buyer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `family` varchar(40) DEFAULT NULL,
+  `district` varchar(40) DEFAULT NULL,
+  `discount_percent` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(40) DEFAULT NULL,
+  `district` varchar(40) DEFAULT NULL,
+  `comission_percent` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `purchase` (
+  `order_number` int(11) NOT NULL AUTO_INCREMENT,
+  `order_date` varchar(100) DEFAULT NULL,
+  `seller` int(11) DEFAULT NULL,
+  `buyer` int(11) DEFAULT NULL,
+  `book` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
+  PRIMARY KEY (`order_number`),
+  KEY `FK_sailer_idx` (`seller`),
+  KEY `FK_buyer_idx` (`buyer`),
+  KEY `FK_book_idx` (`book`),
+  CONSTRAINT `FK_book` FOREIGN KEY (`book`) REFERENCES `books` (`id`),
+  CONSTRAINT `FK_buyer` FOREIGN KEY (`buyer`) REFERENCES `buyer` (`id`),
+  CONSTRAINT `FK_saller` FOREIGN KEY (`seller`) REFERENCES `store` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO books(book_name, cost, warehouse, quantity)
+values
+('book1', 500, 'Советский', 100),
+('book2', 1000, 'Сормовский', 150),
+('book3', 1500, 'Нижегородский', 2100),
+('book4', 2000, 'Приокский', 1250),
+('Windows', 2500, 'Автозаводский', 500);
+
+INSERT INTO buyer(family, district, discount_percent)
+values
+('Смирнов','Советский', 5),
+('Иванов', 'Сормовский', 10),
+('Кузнецов', 'Нижегородский', 21),
+('Соколов', 'Приокский', 12),
+('Попов', 'Автозаводский', 14);
+
+INSERT INTO store(title, district, comission_percent)
+values
+('Читай-город','Советский', 5),
+('Дирижабль', 'Сормовский', 10),
+('Книжный лабиринт', 'Нижегородский', 15),
+('Дом книги', 'Приокский', 20),
+('ПродаЛитЪ', 'Автозаводский', 25);
+
+INSERT INTO purchase(order_date, seller, buyer, book, quantity, amount)
+values
+('2019-01-10 14:13:00.845', 4, 1, 5, 300, 750000),
+('2019-03-19 23:26:00.652', 2, 2, 4, 100, 200000),
+('2019-09-26 11:17:00.147', 3, 3, 3, 400, 600000),
+('2020-01-11 09:59:00.737', 1, 4, 2, 2, 2000),
+('2020-01-04 19:44:00.159', 5, 5, 1, 7, 3500);
